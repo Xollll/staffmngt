@@ -97,8 +97,14 @@ class _AddStaffPageState extends State<AddStaffPage> {
                           filled: true,
                           fillColor: Colors.white,
                         ),
-                        validator:
-                            (value) => value!.isEmpty ? 'Enter name' : null,
+                        validator: (value) {
+                          {
+                            if (value == null || value.trim().isEmpty)
+                              return 'Enter name';
+                            if (value.length < 3) return 'Name too short';
+                            return null;
+                          }
+                        },
                       ),
                       SizedBox(height: 15),
                       TextFormField(
@@ -109,8 +115,13 @@ class _AddStaffPageState extends State<AddStaffPage> {
                           filled: true,
                           fillColor: Colors.white,
                         ),
-                        validator:
-                            (value) => value!.isEmpty ? 'Enter ID' : null,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty)
+                            return 'Enter age';
+                          final age = int.tryParse(value);
+                          if (age == null || age <= 0) return 'Enter valid age';
+                          return null;
+                        },
                       ),
                       SizedBox(height: 15),
                       TextFormField(
