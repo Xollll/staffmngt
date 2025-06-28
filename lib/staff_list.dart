@@ -7,9 +7,9 @@ class StaffListPage extends StatelessWidget {
 
   void _deleteStaff(String id, BuildContext context) {
     staffRef.doc(id).delete();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Deleted')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Deleted')));
   }
 
   void _editStaff(BuildContext context, DocumentSnapshot doc) {
@@ -19,56 +19,56 @@ class StaffListPage extends StatelessWidget {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Edit Staff'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(controller: nameCtrl, decoration: InputDecoration(labelText: 'Name')),
-            TextField(controller: idCtrl, decoration: InputDecoration(labelText: 'ID')),
-            TextField(controller: ageCtrl, decoration: InputDecoration(labelText: 'Age')),
-          ],
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text('Cancel')),
-          ElevatedButton(
-            onPressed: () {
-              staffRef.doc(doc.id).update({
-                'name': nameCtrl.text,
-                'id': idCtrl.text,
-                'age': int.tryParse(ageCtrl.text) ?? 0,
-              });
-              Navigator.pop(context);
-            },
-            child: Text('Save'),
+      builder:
+          (context) => AlertDialog(
+            title: Text('Edit Staff'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: nameCtrl,
+                  decoration: InputDecoration(labelText: 'Name'),
+                ),
+                TextField(
+                  controller: idCtrl,
+                  decoration: InputDecoration(labelText: 'ID'),
+                ),
+                TextField(
+                  controller: ageCtrl,
+                  decoration: InputDecoration(labelText: 'Age'),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  staffRef.doc(doc.id).update({
+                    'name': nameCtrl.text,
+                    'id': idCtrl.text,
+                    'age': int.tryParse(ageCtrl.text) ?? 0,
+                  });
+                  Navigator.pop(context);
+                },
+                child: Text('Save'),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Staff List'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            tooltip: 'Add Staff',
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => AddStaffPage()),
-              );
-            },
-          ),
-        ],
-      ),
+      appBar: AppBar(title: Text('Staff List')),
       body: StreamBuilder<QuerySnapshot>(
         stream: staffRef.orderBy('createdAt', descending: true).snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
+          if (!snapshot.hasData)
+            return Center(child: CircularProgressIndicator());
 
           final docs = snapshot.data!.docs;
 
@@ -102,6 +102,17 @@ class StaffListPage extends StatelessWidget {
             },
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => AddStaffPage()),
+          );
+        },
+        icon: Icon(Icons.add),
+        label: Text('Add Staff'),
+        tooltip: 'Add Staff',
       ),
     );
   }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:staffmngt/staff_creation/add_staff.dart';
-import './staff_creation/add_staff.dart';
+import 'package:staffmngt/staff_list.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,9 +14,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Staff App',
+      title: 'Staff App Management',
       debugShowCheckedModeBanner: false,
-      home: AddStaffPage(),
+      home: StaffListPage(),
     );
   }
 }
