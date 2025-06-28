@@ -23,16 +23,15 @@ class _AddStaffPageState extends State<AddStaffPage> {
           'createdAt': Timestamp.now(),
         });
 
-        // Go to staff list page
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => StaffListPage()),
         );
       } catch (e) {
         print('Error adding staff: $e');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to add staff: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to add staff: $e')));
       }
     }
   }
@@ -40,38 +39,117 @@ class _AddStaffPageState extends State<AddStaffPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Add Staff')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
-                validator: (value) => value!.isEmpty ? 'Enter name' : null,
-              ),
-              TextFormField(
-                controller: _idController,
-                decoration: InputDecoration(labelText: 'ID'),
-                validator: (value) => value!.isEmpty ? 'Enter ID' : null,
-              ),
-              TextFormField(
-                controller: _ageController,
-                decoration: InputDecoration(labelText: 'Age'),
-                keyboardType: TextInputType.number,
-                validator: (value) =>
-                    value!.isEmpty ? 'Enter age' : null,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _submitStaff,
-                child: Text('Submit'),
-              ),
-            ],
-          ),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => StaffListPage()),
+            );
+          },
         ),
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          //
+          Image.asset('assets/bg.jpg', fit: BoxFit.cover),
+          //
+          Center(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.85),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "Add Staff Details",
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      TextFormField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          labelText: 'Name',
+                          border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        validator:
+                            (value) => value!.isEmpty ? 'Enter name' : null,
+                      ),
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: _idController,
+                        decoration: InputDecoration(
+                          labelText: 'ID',
+                          border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        validator:
+                            (value) => value!.isEmpty ? 'Enter ID' : null,
+                      ),
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: _ageController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: 'Age',
+                          border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        validator:
+                            (value) => value!.isEmpty ? 'Enter age' : null,
+                      ),
+                      SizedBox(height: 25),
+                      ElevatedButton(
+                        onPressed: _submitStaff,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 15,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
