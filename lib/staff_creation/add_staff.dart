@@ -25,7 +25,18 @@ class _AddStaffPageState extends State<AddStaffPage> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => StaffListPage()),
+          PageRouteBuilder(
+            pageBuilder:
+                (context, animation, secondaryAnimation) => StaffListPage(),
+            transitionsBuilder: (
+              context,
+              animation,
+              secondaryAnimation,
+              child,
+            ) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          ),
         );
       } catch (e) {
         print('Error adding staff: $e');
@@ -48,7 +59,18 @@ class _AddStaffPageState extends State<AddStaffPage> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => StaffListPage()),
+              PageRouteBuilder(
+                pageBuilder:
+                    (context, animation, secondaryAnimation) => StaffListPage(),
+                transitionsBuilder: (
+                  context,
+                  animation,
+                  secondaryAnimation,
+                  child,
+                ) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+              ),
             );
           },
         ),

@@ -6,32 +6,32 @@ class StaffListPage extends StatelessWidget {
   final staffRef = FirebaseFirestore.instance.collection('staff');
 
   void _deleteStaff(String id, BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (ctx) => AlertDialog(
-      title: Text('Confirm Deletion'),
-      content: Text('Are you sure you want to delete this staff entry?'),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(ctx).pop(),
-          child: Text('Cancel'),
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-          onPressed: () async {
-            await staffRef.doc(id).delete();
-            Navigator.of(ctx).pop(); // Close the dialog
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Deleted successfully')),
-            );
-          },
-          child: Text('Delete'),
-        ),
-      ],
-    ),
-  );
-}
-
+    showDialog(
+      context: context,
+      builder:
+          (ctx) => AlertDialog(
+            title: Text('Confirm Deletion'),
+            content: Text('Are you sure you want to delete this staff entry?'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(),
+                child: Text('Cancel'),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                onPressed: () async {
+                  await staffRef.doc(id).delete();
+                  Navigator.of(ctx).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Deleted successfully')),
+                  );
+                },
+                child: Text('Delete'),
+              ),
+            ],
+          ),
+    );
+  }
 
   void _editStaff(BuildContext context, DocumentSnapshot doc) {
     final nameCtrl = TextEditingController(text: doc['name']);
@@ -40,42 +40,52 @@ class StaffListPage extends StatelessWidget {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Edit Staff'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(controller: nameCtrl, decoration: InputDecoration(labelText: 'Name')),
-            TextField(controller: idCtrl, decoration: InputDecoration(labelText: 'ID')),
-            TextField(controller: ageCtrl, decoration: InputDecoration(labelText: 'Age')),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+      builder:
+          (context) => AlertDialog(
+            title: Text('Edit Staff'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: nameCtrl,
+                  decoration: InputDecoration(labelText: 'Name'),
+                ),
+                TextField(
+                  controller: idCtrl,
+                  decoration: InputDecoration(labelText: 'ID'),
+                ),
+                TextField(
+                  controller: ageCtrl,
+                  decoration: InputDecoration(labelText: 'Age'),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  staffRef.doc(doc.id).update({
+                    'name': nameCtrl.text,
+                    'id': idCtrl.text,
+                    'age': int.tryParse(ageCtrl.text) ?? 0,
+                  });
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
+                child: Text('Save'),
+              ),
+            ],
           ),
-          ElevatedButton(
-            onPressed: () {
-              staffRef.doc(doc.id).update({
-                'name': nameCtrl.text,
-                'id': idCtrl.text,
-                'age': int.tryParse(ageCtrl.text) ?? 0,
-              });
-              Navigator.pop(context);
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
-            child: Text('Save'),
-          ),
-        ],
-      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF2F6FC), 
+      backgroundColor: Color(0xFFF2F6FC),
       appBar: AppBar(
         backgroundColor: Colors.teal,
         title: Text('Staff List'),
@@ -112,7 +122,10 @@ class StaffListPage extends StatelessWidget {
                 ),
                 margin: EdgeInsets.only(bottom: 16),
                 child: ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   leading: CircleAvatar(
                     backgroundColor: Colors.teal,
                     child: Text(
@@ -148,7 +161,18 @@ class StaffListPage extends StatelessWidget {
         onPressed: () {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => AddStaffPage()),
+            PageRouteBuilder(
+              pageBuilder:
+                  (context, animation, secondaryAnimation) => AddStaffPage(),
+              transitionsBuilder: (
+                context,
+                animation,
+                secondaryAnimation,
+                child,
+              ) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+            ),
           );
         },
         backgroundColor: Colors.teal,
