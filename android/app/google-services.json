@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "463117917591",
+    "project_id": "staffmanagmnt",
+    "storage_bucket": "staffmanagmnt.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:463117917591:android:610724edcdf4bd4fa378d2",
+        "android_client_info": {
+          "package_name": "com.example.staffmngt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWgVKWItx8t3UUU7DS9kLfqe5ld-pDysA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
