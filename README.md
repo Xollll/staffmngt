@@ -54,9 +54,11 @@ The app demonstrates **CRUD** (Create, Read, Update, Delete) operations using **
 
 ## Screenshot 
 - Staff List Page
+---
   ![image](https://github.com/user-attachments/assets/378f8f54-7279-4f55-a0e7-b73ea487657b)
 
 - Staff Creation Page
+---
   ![image](https://github.com/user-attachments/assets/7a8dfa9a-278a-4338-a9d1-c5e1fb365896)
 
 
